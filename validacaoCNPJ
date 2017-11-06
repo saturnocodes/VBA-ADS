@@ -1,0 +1,77 @@
+# VBA-ADS
+Exercícios da Aula de Programação em Microinformática
+
+Validação de CNPJ
+
+Option Explicit
+
+Function cnpjvalidacao(cnpj As String) As String
+Dim fator As Integer
+Dim dig As Integer
+Dim soma As Integer
+Dim cnpjstr As String
+
+If (Len(cnpj) <> 14) Then Exit Function 'sai da função se o CNPJ tiver menos ou mais de 14 dígitos
+
+If Not IsNumeric(cnpj) Then Exit Function
+    
+cnpjstr = cnpj
+cnpj = Left$(cnpj, 12) 'tranca o CNPJ em 12 caracteres
+
+        
+'Cálculo dos caracteres x dígitos
+
+inicio:
+
+fator = 9
+soma = 0
+
+For dig = Len(cnpj) To 1 Step -1
+    
+    If (fator < 2) Then fator = 9
+    
+    soma = soma + (CInt(Mid(cnpj, dig, 1)) * fator)
+    
+    fator = fator - 1
+    
+Next
+
+'Cálculo do mod e dígito
+
+dig = soma Mod 11
+If dig = 10 Then dig = 0
+
+
+
+'Concatenando o dígito ao CNPJ
+If Not (CStr(dig) = Mid(cnpjstr, Len(cnpj) + 1, 1)) Then MsgBox "Dígito inválido"
+cnpj = cnpj & CStr(dig)
+
+
+'Cálculo do 2º dígito
+
+If Len(cnpj) = 13 Then
+    GoTo inicio
+End If
+
+
+'Valores dos dígitos:
+
+MsgBox "Os dígitos são " & Mid(cnpj, 13, 2) & "!"
+If (Mid(cnpjstr, 13, 2) = Mid(cnpj, 13, 2)) Then
+    MsgBox "CNPJ VÁLIDO!"
+    Else
+    MsgBox "CNPJ inválido"
+End If
+
+
+    
+End Function
+
+'sub para testar a função
+Sub vacnpj()
+Dim cnpj As String
+cnpj = InputBox("digite seu cnpj, apenas os caracteres")
+cnpjvalidacao (cnpj)
+
+End Sub
