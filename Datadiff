@@ -1,0 +1,6 @@
+'Data diff - função
+
+Desafio - função data diff
+Function datadifftexto(data As Date) As String
+    MsgBox DateDiff("yyyy", data, Date) & " ano(s), " & DateDiff("m", data, Date) & " mes(es) e " & DateDiff("d", data, Date) & " dia(s)."
+End Function
